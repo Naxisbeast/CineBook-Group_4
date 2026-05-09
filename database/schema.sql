@@ -1,106 +1,169 @@
--- database/schema.sql
--- Creates the cinebook_db database and all 9 tables required for the CineBook
--- Online Movie Ticket Booking System. Uses InnoDB engine with utf8mb4 charset.
+-- =========================
+-- DROpping old tables to RESET if they do exist)
+-- =========================
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Payment CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE BookingSeat CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Booking CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE ShowSchedule CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Seat CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Screen CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Theatre CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Movie CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE Users CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
 
-CREATE DATABASE IF NOT EXISTS cinebook_db
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+-- =========================
+-- USERS
+-- =========================
+CREATE TABLE Users (
+    User_Id NUMBER(10) PRIMARY KEY,
+    Full_Name VARCHAR2(100) NOT NULL,
+    Email VARCHAR2(150) NOT NULL UNIQUE,
+    Password_Hash VARCHAR2(255) NOT NULL,
+    Role VARCHAR2(20) DEFAULT 'customer' NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
-USE cinebook_db;
+-- =========================
+-- MOVIE
+-- =========================
+CREATE TABLE Movie (
+    Movie_Id NUMBER(10) PRIMARY KEY,
+    Title VARCHAR2(200) NOT NULL,
+    Genre VARCHAR2(100) NOT NULL,
+    Duration NUMBER(10) NOT NULL,
+    Language VARCHAR2(50) DEFAULT 'English' NOT NULL,
+    Rating NUMBER(3,1),
+    Poster_Url VARCHAR2(500),
+    Description VARCHAR2(500),
+    Release_Date TIMESTAMP,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
--- Stores registered customers and admins
-CREATE TABLE IF NOT EXISTS Users (
-  user_id     INT             NOT NULL AUTO_INCREMENT,
-  full_name   VARCHAR(100)    NOT NULL,
-  email       VARCHAR(150)    NOT NULL,
-  password    VARCHAR(255)    NOT NULL,
-  role        ENUM('admin','customer') NOT NULL DEFAULT 'customer',
-  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- =========================
+-- THEATRE
+-- =========================
+CREATE TABLE Theatre (
+    Theatre_Id NUMBER(10) PRIMARY KEY,
+    Name VARCHAR2(150) NOT NULL,
+    Location VARCHAR2(255) NOT NULL,
+    City VARCHAR2(100) NOT NULL,
+    Phone VARCHAR2(20)
+);
 
--- Stores the catalogue of films available for booking
-CREATE TABLE IF NOT EXISTS Movies (
-  movie_id    INT             NOT NULL AUTO_INCREMENT,
-  title       VARCHAR(200)    NOT NULL,
-  genre       VARCHAR(100)    NOT NULL,
-  duration    INT             NOT NULL,
-  language    VARCHAR(50)     NOT NULL DEFAULT 'English',
-  rating      DECIMAL(3,1)    DEFAULT NULL,
-  poster_url  VARCHAR(500)    DEFAULT NULL,
-  description TEXT            DEFAULT NULL,
-  release_date DATE           DEFAULT NULL,
-  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (movie_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- =========================
+-- SCREEN
+-- =========================
+CREATE TABLE Screen (
+    Screen_Id NUMBER(10) PRIMARY KEY,
+    Theatre_Id NUMBER(10) NOT NULL,
+    Name VARCHAR2(50) NOT NULL,
+    Total_Seats NUMBER(10) DEFAULT 0 NOT NULL,
+    CONSTRAINT fk_screen_theatre FOREIGN KEY (Theatre_Id)
+    REFERENCES Theatre(Theatre_Id)
+);
 
--- Stores physical cinema locations
-CREATE TABLE IF NOT EXISTS Theatres (
-  theatre_id  INT             NOT NULL AUTO_INCREMENT,
-  name        VARCHAR(150)    NOT NULL,
-  location    VARCHAR(255)    NOT NULL,
-  city        VARCHAR(100)    NOT NULL,
-  phone       VARCHAR(20)     DEFAULT NULL,
-  PRIMARY KEY (theatre_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- =========================
+-- SEAT
+-- =========================
+CREATE TABLE Seat (
+    Seat_Id NUMBER(10) PRIMARY KEY,
+    Screen_Id NUMBER(10) NOT NULL,
+    Seat_Row CHAR(1) NOT NULL,
+    Seat_Number NUMBER(10) NOT NULL,
+    Seat_Type VARCHAR2(20) DEFAULT 'Standard' NOT NULL,
 
--- Stores auditoriums inside a theatre
-CREATE TABLE IF NOT EXISTS Screens (
-  screen_id   INT             NOT NULL AUTO_INCREMENT,
-  theatre_id  INT             NOT NULL,
-  name        VARCHAR(50)     NOT NULL,
-  total_seats INT             NOT NULL DEFAULT 0,
-  PRIMARY KEY (screen_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    CONSTRAINT uq_seat UNIQUE (Screen_Id, Seat_Row, Seat_Number),
 
--- Stores individual seats within a screen
-CREATE TABLE IF NOT EXISTS Seats (
-  seat_id     INT             NOT NULL AUTO_INCREMENT,
-  screen_id   INT             NOT NULL,
-  seat_row    CHAR(1)         NOT NULL,
-  seat_number INT             NOT NULL,
-  seat_type   ENUM('standard','premium','vip') NOT NULL DEFAULT 'standard',
-  PRIMARY KEY (seat_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    CONSTRAINT chk_seat_type
+        CHECK (Seat_Type IN ('Standard', 'Premium', 'VIP')),
 
--- Stores a specific screening of a movie on a screen
-CREATE TABLE IF NOT EXISTS ShowSchedules (
-  show_id     INT             NOT NULL AUTO_INCREMENT,
-  movie_id    INT             NOT NULL,
-  screen_id   INT             NOT NULL,
-  show_date   DATE            NOT NULL,
-  show_time   TIME            NOT NULL,
-  price       DECIMAL(10,2)   NOT NULL DEFAULT 0.00,
-  PRIMARY KEY (show_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    CONSTRAINT fk_seat_screen
+        FOREIGN KEY (Screen_Id)
+        REFERENCES Screen(Screen_Id)
+);
 
--- Stores a user's reservation for one or more seats at a show
-CREATE TABLE IF NOT EXISTS Bookings (
-  booking_id      INT             NOT NULL AUTO_INCREMENT,
-  user_id         INT             NOT NULL,
-  show_id         INT             NOT NULL,
-  total_amount    DECIMAL(10,2)   NOT NULL DEFAULT 0.00,
-  status          ENUM('pending','confirmed','cancelled') NOT NULL DEFAULT 'pending',
-  booked_at       DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (booking_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- =========================
+-- SHOWSCHEDULE
+-- =========================
+CREATE TABLE ShowSchedule (
+    Show_Id NUMBER(10) PRIMARY KEY,
+    Movie_Id NUMBER(10) NOT NULL,
+    Screen_Id NUMBER(10) NOT NULL,
+    Show_DateTime TIMESTAMP NOT NULL,
+    Price NUMBER(10,2) DEFAULT 0.00 NOT NULL,
 
--- Stores the seats claimed within each booking
-CREATE TABLE IF NOT EXISTS BookingSeats (
-  booking_seat_id INT           NOT NULL AUTO_INCREMENT,
-  booking_id      INT           NOT NULL,
-  seat_id         INT           NOT NULL,
-  show_id         INT           NOT NULL,
-  PRIMARY KEY (booking_seat_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    CONSTRAINT fk_show_movie FOREIGN KEY (Movie_Id)
+        REFERENCES Movie(Movie_Id),
 
--- Stores payment records linked to a booking
-CREATE TABLE IF NOT EXISTS Payments (
-  payment_id      INT             NOT NULL AUTO_INCREMENT,
-  booking_id      INT             NOT NULL,
-  amount          DECIMAL(10,2)   NOT NULL,
-  payment_method  ENUM('card','eft','cash','voucher') NOT NULL DEFAULT 'card',
-  payment_status  ENUM('pending','completed','failed','refunded') NOT NULL DEFAULT 'pending',
-  paid_at         DATETIME        DEFAULT NULL,
-  PRIMARY KEY (payment_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    CONSTRAINT fk_show_screen FOREIGN KEY (Screen_Id)
+        REFERENCES Screen(Screen_Id)
+);
+
+-- =========================
+-- BOOKING
+-- =========================
+CREATE TABLE Booking (
+    Booking_Id NUMBER(10) PRIMARY KEY,
+    User_Id NUMBER(10) NOT NULL,
+    Show_Id NUMBER(10) NOT NULL,
+    Total_Amount NUMBER(10,2) DEFAULT 0.00 NOT NULL,
+    Status VARCHAR2(20) DEFAULT 'pending' NOT NULL,
+    Booked_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    CONSTRAINT chk_booking_status
+        CHECK (Status IN ('pending', 'confirmed', 'cancelled')),
+
+    CONSTRAINT fk_booking_user FOREIGN KEY (User_Id)
+        REFERENCES Users(User_Id),
+
+    CONSTRAINT fk_booking_show FOREIGN KEY (Show_Id)
+        REFERENCES ShowSchedule(Show_Id)
+);
+
+-- =========================
+-- BOOKINGSEAT
+-- =========================
+CREATE TABLE BookingSeat (
+    Booking_Seat_Id NUMBER(10) PRIMARY KEY,
+    Booking_Id NUMBER(10) NOT NULL,
+    Seat_Id NUMBER(10) NOT NULL,
+    Show_Id NUMBER(10) NOT NULL,
+
+    CONSTRAINT uq_booking_seat UNIQUE (Show_Id, Seat_Id),
+
+    CONSTRAINT fk_bs_booking FOREIGN KEY (Booking_Id)
+        REFERENCES Booking(Booking_Id),
+
+    CONSTRAINT fk_bs_seat FOREIGN KEY (Seat_Id)
+        REFERENCES Seat(Seat_Id),
+
+    CONSTRAINT fk_bs_show FOREIGN KEY (Show_Id)
+        REFERENCES ShowSchedule(Show_Id)
+);
+
+-- =========================
+-- PAYMENT
+-- =========================
+CREATE TABLE Payment (
+    Payment_Id NUMBER(10) PRIMARY KEY,
+    Booking_Id NUMBER(10) NOT NULL UNIQUE,
+    Amount NUMBER(10,2) NOT NULL,
+    Payment_Method VARCHAR2(20) DEFAULT 'card' NOT NULL,
+    Payment_Status VARCHAR2(20) DEFAULT 'pending' NOT NULL,
+    Paid_At TIMESTAMP,
+
+    CONSTRAINT chk_payment_status
+        CHECK (Payment_Status IN ('pending', 'successful', 'failed')),
+
+    CONSTRAINT fk_payment_booking FOREIGN KEY (Booking_Id)
+        REFERENCES Booking(Booking_Id)
+);
