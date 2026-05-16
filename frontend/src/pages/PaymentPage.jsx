@@ -1,7 +1,3 @@
-// frontend/src/pages/PaymentPage.jsx
-// Payment page — displays a booking summary and a simple payment form.
-// On successful payment the user sees a BookingConfirmation card.
-
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BookingConfirmation from '../components/BookingConfirmation.jsx';

@@ -15,6 +15,7 @@
 // =============================================================
 
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'cinebook_dev_secret_change_me';
 
 module.exports = function verifyToken(req, res, next) {
   // Expect: Authorization: Bearer <token>
@@ -26,7 +27,7 @@ module.exports = function verifyToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;  // Attach decoded payload to req so routes can read it
     next();
   } catch (err) {
