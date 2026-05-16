@@ -23,14 +23,40 @@ const showRoutes     = require('./routes/shows');
 const seatRoutes     = require('./routes/seats');
 const bookingRoutes  = require('./routes/bookings');
 const paymentRoutes  = require('./routes/payments');
+const imageRoutes    = require('./routes/images');
+const adminRoutes    = require('./routes/admin');
+const managerRoutes  = require('./routes/manager');
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
+const configuredClientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = new Set([
+  configuredClientUrl,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5174'
+]);
+
+function allowOrigin(origin, callback) {
+  if (!origin || allowedOrigins.has(origin)) {
+    callback(null, true);
+    return;
+  }
+
+  const isLocalViteOrigin = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+  if (process.env.NODE_ENV !== 'production' && isLocalViteOrigin) {
+    callback(null, true);
+    return;
+  }
+
+  callback(new Error(`CORS blocked origin: ${origin}`));
+}
 
 // ── Global middleware ───────────────────────────────────────
 app.use(helmet());           // Security headers
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: allowOrigin,
   credentials: true
 }));
 app.use(express.json());     // Parse JSON request bodies
@@ -50,8 +76,11 @@ app.use('/api/auth',     authRoutes);      // POST /api/auth/register  POST /api
 app.use('/api/movies',   movieRoutes);     // GET  /api/movies          GET  /api/movies/:id
 app.use('/api/shows',    showRoutes);      // GET  /api/shows/:movie_id
 app.use('/api/seats',    seatRoutes);      // GET  /api/seats/:show_id
-app.use('/api/bookings', bookingRoutes);   // GET  /api/my-bookings     POST /api/bookings
+app.use('/api/bookings', bookingRoutes);   // GET  /api/bookings/my-bookings  POST /api/bookings
 app.use('/api/payments', paymentRoutes);   // POST /api/payments
+app.use('/api/images',   imageRoutes);      // GET  /api/images/movie?title=...
+app.use('/api/admin',    adminRoutes);      // Administrator and System Administrator actions
+app.use('/api/manager',  managerRoutes);    // Cinema Manager theatre-scoped actions
 
 // ── 404 handler (route not found) ──────────────────────────
 app.use((req, res) => {
