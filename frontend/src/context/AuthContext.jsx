@@ -1,80 +1,75 @@
-// =============================================================
-// CineBook — frontend/src/context/AuthContext.jsx
-// Authentication state — wraps the whole app in App.jsx
-// CMPG 311 | Group 4 | 2026
-// =============================================================
-// Any component can access auth state with:
-//   import { useAuth } from '../context/AuthContext';
-//   const { user, isLoggedIn, login, logout } = useAuth();
-// =============================================================
-
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 const AuthContext = createContext(null);
+const TOKEN_KEY = 'cinebook_token';
+const USER_KEY = 'cinebook_user';
 
-// ── Provider ─────────────────────────────────────────────────
+function normalizeUser(userData) {
+  if (!userData) return null;
+  return {
+    User_Id: userData.User_Id ?? userData.user_id,
+    First_Name: userData.First_Name ?? userData.first_name,
+    Last_Name: userData.Last_Name ?? userData.last_name,
+    Email: userData.Email ?? userData.email,
+    Role: userData.Role ?? userData.role,
+    Loyalty_Status: userData.Loyalty_Status ?? userData.loyalty_status ?? 'Standard',
+    Theatre_Id: userData.Theatre_Id ?? userData.theatre_id ?? null
+  };
+}
+
 export function AuthProvider({ children }) {
-  const [user,  setUser]  = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true); // true while restoring session
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Restore session from localStorage on app load (page refresh)
   useEffect(() => {
-    const savedToken = localStorage.getItem('cinebook_token');
-    const savedUser  = localStorage.getItem('cinebook_user');
-
-    if (savedToken && savedUser) {
+    const storedToken = localStorage.getItem(TOKEN_KEY);
+    const storedUser = localStorage.getItem(USER_KEY);
+    if (storedToken && storedUser) {
       try {
-        setToken(savedToken);
-        setUser(JSON.parse(savedUser));
+        setToken(storedToken);
+        setUser(normalizeUser(JSON.parse(storedUser)));
       } catch {
-        // Corrupted data in storage — clear it
-        localStorage.removeItem('cinebook_token');
-        localStorage.removeItem('cinebook_user');
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
       }
     }
     setLoading(false);
   }, []);
 
-  // Called by LoginPage and RegisterPage after successful auth
   const login = (newToken, userData) => {
-    localStorage.setItem('cinebook_token', newToken);
-    localStorage.setItem('cinebook_user',  JSON.stringify(userData));
+    const normalizedUser = normalizeUser(userData);
+    localStorage.setItem(TOKEN_KEY, newToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(normalizedUser));
     setToken(newToken);
-    setUser(userData);
+    setUser(normalizedUser);
   };
 
-  // Called by Navbar logout button
   const logout = () => {
-    localStorage.removeItem('cinebook_token');
-    localStorage.removeItem('cinebook_user');
-    setToken(null);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem('cinebook_pending_payment');
+    setToken('');
     setUser(null);
   };
 
-  const value = {
-    user,
-    token,
-    loading,
-    isLoggedIn : !!user,
-    login,
-    logout
-  };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      isLoggedIn: !!token && !!user,
+      token,
+      user,
+      loading,
+      login,
+      logout
+    }),
+    [token, user, loading]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// ── Hook (shortcut for consuming the context) ────────────────
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used inside an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used inside AuthProvider');
   return context;
 }
-
-export default AuthContext;
