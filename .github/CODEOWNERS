@@ -1,0 +1,23 @@
+# CineBook ownership guard
+#
+# GitHub only enforces CODEOWNERS when the owners are real GitHub users or teams.
+# For now, Thapelo/Naxisbeast reviews every PR so no teammate can merge files
+# outside their agreed section without approval.
+#
+# After collecting teammate GitHub usernames, replace or extend these rules
+# with the exact people for each section.
+
+* @Naxisbeast
+
+# Phase 3 database ownership
+/database/oracle/schema.sql @Naxisbeast
+/database/oracle/queries.sql @Naxisbeast
+
+# Suggested ownership map:
+# Thapelo  - database/oracle/schema.sql, database/oracle/queries.sql, integration files
+# Thato    - database/oracle/indexes_views.sql, backend/routes/movies.js, backend/routes/shows.js, backend/routes/seats.js
+# Ncobile  - database/oracle/seed.sql, database/mysql/seed.sql
+# Dineo    - frontend/src/pages/HomePage.jsx, frontend/src/pages/MoviePage.jsx, frontend/src/components/MovieCard.jsx, frontend/src/components/MovieHero.jsx
+# Clifford - frontend/src/pages/BookingPage.jsx, frontend/src/pages/PaymentPage.jsx, frontend/src/components/BookingSummary.jsx, backend/routes/bookings.js, backend/routes/payments.js
+# Banele   - database/oracle/extra.sql, frontend/src/components/SeatGrid.jsx, frontend/src/components/SeatLegend.jsx, frontend/src/components/BookingConfirmation.jsx, frontend/src/components/Navbar.jsx
+# Tshepo   - backend/routes/auth.js, backend/middleware/verifyToken.js, frontend/src/pages/LoginPage.jsx, frontend/src/pages/RegisterPage.jsx, frontend/src/pages/ProfilePage.jsx, frontend/src/context/AuthContext.jsx
