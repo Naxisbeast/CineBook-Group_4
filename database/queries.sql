@@ -1,10 +1,3 @@
--- =============================================================
--- CineBook — database/queries.sql
--- 10 SQL queries for the CineBook Online Cinema Ticket Booking System
--- CMPG 311 | Group 4 | North-West University | 2026
--- PM: Thapelo Kamogelo Wana
--- =============================================================
-
 USE cinebook;
 
 
