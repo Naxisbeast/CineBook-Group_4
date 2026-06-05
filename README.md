@@ -1,94 +1,93 @@
-# CineBook — Online Movie Ticket Booking System
+# CineBook - Online Movie Ticket Booking System
 
-CineBook is a full-stack web application built as a CMPG 311 Database Systems group project by 8 students. It allows users to browse movies, view show schedules, select seats, book tickets, and make payments online.
+CineBook is a full-stack cinema booking web application built as a CMPG 311 Database Systems group project at North-West University.
 
----
+The system allows users to browse movies, view show schedules, select seats, make bookings, and complete payments. It also includes role-based dashboards for customers, cinema managers, and administrators.
 
-## Tech Stack
+## Project Context
 
-| Layer      | Technology                                      |
-|------------|-------------------------------------------------|
-| Frontend   | React.js (Vite), Tailwind CSS, React Router, Axios |
-| Backend    | Node.js, Express.js                             |
-| Database   | MySQL                                           |
-| Auth       | JWT, bcrypt                                     |
-| Dev Tools  | dotenv, nodemon, mysql2, cors                   |
+This was an academic group project completed by 8 students. The goal was to design and implement a database-backed booking system while applying software engineering, database design, and full-stack development concepts.
 
----
+This repository is part of my student portfolio and shows my growth in system integration, database-backed applications, teamwork, and project documentation.
 
-## Project Structure
+## My Contribution
 
-```
-cinebook/
-├── .gitignore
-├── README.md
+My contribution focused on project coordination, integration support, database/backend support, and final documentation.
+
+Based on the project files and team planning document, I worked on:
+
+- Project management and final integration planning.
+- Database schema and table constraints for the Oracle submission.
+- Supporting the final integration of database, backend, frontend, and documentation files.
+- README and setup documentation.
+- Supported backend integration work around server setup, database connection, environment configuration, admin/manager routes, image route support, and shared role utilities.
+- Helping keep team contributions organised through branch and file ownership planning.
+
+This was a group project, so the repository represents combined team work rather than only individual code.
+
+## Features
+
+- Movie browsing and movie detail pages.
+- Show schedule viewing.
+- Seat selection for bookings.
+- Customer booking flow.
+- Simulated payment flow with ticket confirmation handling.
+- JWT-based authentication.
+- Role-based access for customers, cinema managers, administrators, and system administrators.
+- Admin dashboard for users, movies, shows, bookings, and revenue.
+- Manager dashboard for theatre-scoped shows, bookings, occupancy, and revenue.
+- MySQL database for the React/Node web app.
+- Oracle SQL files for the academic database phase.
+
+## Architecture
+
+```text
+CineBook/
+├── backend/        Express.js API, authentication, routes, email service
+├── frontend/       React + Vite user interface
 ├── database/
-│   ├── oracle/           # Phase 3 Oracle SQL Developer submission files
-│   ├── mysql/            # MySQL schema + seed for the web app
-│   ├── schema.sql        # Older working file kept for reference
-│   ├── seed.sql          # Older working file kept for reference
-│   └── queries.sql       # Older working file kept for reference
-├── backend/
-│   ├── package.json
-│   ├── server.js
-│   ├── .env.example
-│   ├── db/db.js
-│   ├── middleware/verifyToken.js
-│   └── routes/
-│       ├── auth.js
-│       ├── movies.js
-│       ├── shows.js
-│       ├── seats.js
-│       ├── bookings.js
-│       └── payments.js
-└── frontend/
-    ├── package.json
-    ├── public/index.html
-    └── src/
-        ├── index.js
-        ├── App.jsx
-        ├── services/api.js
-        ├── context/AuthContext.jsx
-        ├── pages/
-        │   ├── HomePage.jsx
-        │   ├── MoviePage.jsx
-        │   ├── BookingPage.jsx
-        │   ├── PaymentPage.jsx
-        │   ├── LoginPage.jsx
-        │   ├── RegisterPage.jsx
-        │   └── ProfilePage.jsx
-        └── components/
-            ├── Navbar.jsx
-            ├── MovieCard.jsx
-            ├── SeatGrid.jsx
-            └── BookingConfirmation.jsx
+│   ├── mysql/      MySQL schema and seed data for the web app
+│   └── oracle/     Oracle SQL Developer submission files
+└── .github/        Team ownership and pull request templates
 ```
 
----
+## Technologies Used
+
+| Layer | Technologies |
+|---|---|
+| Frontend | React, Vite, Tailwind CSS, React Router, Axios |
+| Backend | Node.js, Express.js |
+| Database | MySQL, Oracle SQL |
+| Authentication | JWT, bcrypt |
+| Email / Notifications | Nodemailer, SMTP configuration |
+| Security / Middleware | Helmet, CORS, Express rate limiting |
+| Tools | npm, Git, GitHub |
+
+## Database Design
+
+The database models the main relationships needed for a cinema booking system:
+
+- `Users` stores customers, managers, administrators, and system administrators.
+- `Movie` stores movie information.
+- `Theatre`, `Screen`, and `Seat` model the cinema layout.
+- `ShowSchedule` links movies to screens and show times.
+- `Booking` stores customer bookings.
+- `BookingSeat` connects bookings to selected seats.
+- `Payment` stores payment information linked to bookings.
+
+The project includes both MySQL files for the web app and Oracle files for the academic database submission.
 
 ## Setup Instructions
 
 ### Prerequisites
 
-- Node.js >= 18
-- MySQL >= 8
-- npm >= 9
+- Node.js 18+
+- npm 9+
+- MySQL 8+
 
 ### 1. Database Setup
 
-#### Oracle SQL Developer (Phase 3 submission)
-
-Run these files in this order:
-
-```sql
-database/oracle/schema.sql
-database/oracle/seed.sql
-database/oracle/indexes_views.sql
-database/oracle/extra.sql
-database/oracle/queries.sql
-```
-
-#### MySQL (React + Node app)
+Run the MySQL schema and seed files:
 
 ```bash
 mysql -u root -p < database/mysql/schema.sql
@@ -100,41 +99,14 @@ mysql -u root -p cinebook_db < database/mysql/seed.sql
 ```bash
 cd backend
 npm install
-
-# Copy the environment template and fill in your values
 copy env.example .env
-# Edit .env with your MySQL credentials and a JWT secret
-# Optional: add TMDB_API_KEY or TMDB_ACCESS_TOKEN for poster/backdrop fallback images
-# Optional: add SMTP settings to send real ticket confirmation emails
-
-# Start the development server
 npm run dev
 ```
 
-The backend will run on **http://localhost:5000**.
+The backend runs on:
 
-### Email Setup
-
-Welcome emails are sent after successful registration. Ticket emails are sent after a successful payment.
-
-For development, you can leave email disabled:
-
-```env
-EMAIL_ENABLED=false
-```
-
-The backend will print the ticket email preview in the backend terminal.
-
-For real emails, add SMTP settings to `backend/.env`:
-
-```env
-EMAIL_ENABLED=true
-MAIL_FROM="CineBook <your_email@example.com>"
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your_email@example.com
-SMTP_PASS=your_email_password_or_app_password
+```text
+http://localhost:5000
 ```
 
 ### 3. Frontend Setup
@@ -142,39 +114,70 @@ SMTP_PASS=your_email_password_or_app_password
 ```bash
 cd frontend
 npm install
-
-# Start the Vite dev server
 npm run dev
 ```
 
-The frontend will run on **http://localhost:5173**.
+The frontend runs on:
 
----
+```text
+http://localhost:5173
+```
 
-## Running the Project
+## Test Accounts
 
-1. Ensure MySQL is running and the database has been initialised.
-2. Start the backend: `cd backend && npm run dev`
-3. Start the frontend: `cd frontend && npm run dev`
-4. Open **http://localhost:5173** in your browser.
+The seed data includes development accounts for testing.
 
-### Test Credentials (from seed data)
-
-| Role     | Email                   | Password   |
-|----------|-------------------------|------------|
+| Role | Email | Password |
+|---|---|---|
 | Administrator | admin@cinebook.co.za | Admin123 |
 | Cinema Manager | manager.sandton@cinebook.co.za | Test123 |
 | Customer | customer@test.co.za | Test123 |
 
-Role-specific pages:
+These are sample local development credentials, not production credentials.
 
-- Customers use `/profile` for booking history and loyalty status.
-- Administrators and System Administrators use `/admin` for users, movies, shows, bookings, and revenue.
-- Cinema Managers use `/manager` for theatre-scoped shows, bookings, occupancy, and revenue.
-- `/dashboard` redirects each signed-in user to the correct page for their role.
+## Screenshots
 
----
+Screenshots will be added after the interface is cleaned and tested.
 
-## Group Members
+| Screen | Status |
+|---|---|
+| Home page | To be added |
+| Movie details | To be added |
+| Seat booking | To be added |
+| Customer profile | To be added |
+| Admin dashboard | To be added |
+| Manager dashboard | To be added |
 
-CMPG 311 Database Systems — Group Project (8 members)
+## What I Learned
+
+- How frontend, backend, and database layers work together in a full-stack system.
+- How role-based access changes application flow and dashboard behaviour.
+- How database design supports real workflows such as bookings, seats, schedules, and payments.
+- How important clear branch ownership and integration planning are in group projects.
+- How to document a project so that another person can understand and run it.
+
+## Challenges
+
+- Coordinating work across multiple team members.
+- Keeping database files aligned between Oracle academic submission files and MySQL web app files.
+- Managing authentication, roles, and protected routes.
+- Integrating booking, payment, and email confirmation logic.
+- Keeping the repository clean while different people worked on different sections.
+
+## Future Improvements
+
+- Add screenshots and a short demo walkthrough.
+- Remove duplicate frontend files after approval.
+- Clarify which database files are active and which are academic/reference files.
+- Add stronger validation and error handling.
+- Add automated tests for core API routes.
+- Improve mobile responsiveness and UI polish.
+- Add a deployment guide if the project is hosted.
+
+## Repository Cleanup Note
+
+This repository is currently being polished for portfolio presentation. Some duplicate frontend files and overlapping database scripts are being reviewed before removal to avoid deleting any team work that may still be referenced.
+
+## Academic Note
+
+This project was built for learning purposes as part of a university group project. It is presented as a student software engineering and database systems project, not as a commercial production system.
