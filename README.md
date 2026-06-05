@@ -10,20 +10,13 @@ This was an academic group project completed for CMPG 311. The goal was to desig
 
 The system allows users to browse movies, view show schedules, select seats, make bookings, and complete a simulated payment flow. It also includes role-based dashboards for customers, cinema managers, and administrators.
 
-## My Role / Contribution
+## Team Project Note
 
-My role focused mainly on project coordination, integration support, documentation support, and selected database/backend-related work.
+CineBook was completed as a CMPG 311 group project at North-West University. This repository represents combined team work, with different members contributing to the database design, backend routes, frontend pages, UI components, authentication, booking flow, documentation, and integration.
 
-My contribution included:
+I include this project in my portfolio as evidence of collaborative software engineering experience, database-backed application development, and exposure to full-stack project integration.
 
-- Helping coordinate the project structure and integration planning.
-- Supporting database schema work and table constraints for the Oracle submission.
-- Supporting final integration between database, backend, frontend, and documentation files.
-- Improving README and setup documentation.
-- Supporting backend integration work around server setup, database connection configuration, role-based routing, environment configuration, and related documentation.
-- Helping keep team contributions organised through branch and file ownership planning.
-
-This was not an individual project. The repository contains work contributed by multiple team members.
+The `.github/CODEOWNERS` file was used as a project review and ownership guard during integration. It should not be read as individual authorship of the entire system.
 
 ## Features
 
