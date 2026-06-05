@@ -1,29 +1,29 @@
 # CineBook - Online Movie Ticket Booking System
 
-CineBook is a full-stack cinema booking web application built as a CMPG 311 Database Systems group project at North-West University.
+CineBook is a full-stack cinema booking web application built as a CMPG 311 group project at North-West University.
 
-The system allows users to browse movies, view show schedules, select seats, make bookings, and complete payments. It also includes role-based dashboards for customers, cinema managers, and administrators.
+This repository represents combined team work by the project group. It is presented in my portfolio to show my involvement in project coordination, integration support, database/backend support, documentation, and collaborative software development.
 
 ## Project Context
 
-This was an academic group project completed by 8 students. The goal was to design and implement a database-backed booking system while applying software engineering, database design, and full-stack development concepts.
+This was an academic group project completed for CMPG 311. The goal was to design and implement a database-backed booking system while applying software engineering, database design, and full-stack development concepts.
 
-This repository is part of my student portfolio and shows my growth in system integration, database-backed applications, teamwork, and project documentation.
+The system allows users to browse movies, view show schedules, select seats, make bookings, and complete a simulated payment flow. It also includes role-based dashboards for customers, cinema managers, and administrators.
 
-## My Contribution
+## My Role / Contribution
 
-My contribution focused on project coordination, integration support, database/backend support, and final documentation.
+My role focused mainly on project coordination, integration support, documentation support, and selected database/backend-related work.
 
-Based on the project files and team planning document, I worked on:
+My contribution included:
 
-- Project management and final integration planning.
-- Database schema and table constraints for the Oracle submission.
-- Supporting the final integration of database, backend, frontend, and documentation files.
-- README and setup documentation.
-- Supported backend integration work around server setup, database connection, environment configuration, admin/manager routes, image route support, and shared role utilities.
+- Helping coordinate the project structure and integration planning.
+- Supporting database schema work and table constraints for the Oracle submission.
+- Supporting final integration between database, backend, frontend, and documentation files.
+- Improving README and setup documentation.
+- Supporting backend integration work around server setup, database connection configuration, role-based routing, environment configuration, and related documentation.
 - Helping keep team contributions organised through branch and file ownership planning.
 
-This was a group project, so the repository represents combined team work rather than only individual code.
+This was not an individual project. The repository contains work contributed by multiple team members.
 
 ## Features
 
@@ -36,7 +36,7 @@ This was a group project, so the repository represents combined team work rather
 - Role-based access for customers, cinema managers, administrators, and system administrators.
 - Admin dashboard for users, movies, shows, bookings, and revenue.
 - Manager dashboard for theatre-scoped shows, bookings, occupancy, and revenue.
-- MySQL database for the React/Node web app.
+- MySQL database files for the React/Node web app.
 - Oracle SQL files for the academic database phase.
 
 ## Architecture
@@ -85,16 +85,14 @@ The project includes both MySQL files for the web app and Oracle files for the a
 - npm 9+
 - MySQL 8+
 
-### 1. Database Setup
-
-Run the MySQL schema and seed files:
+### Database Setup
 
 ```bash
 mysql -u root -p < database/mysql/schema.sql
 mysql -u root -p cinebook_db < database/mysql/seed.sql
 ```
 
-### 2. Backend Setup
+### Backend Setup
 
 ```bash
 cd backend
@@ -103,13 +101,13 @@ copy env.example .env
 npm run dev
 ```
 
-The backend runs on:
+Backend URL:
 
 ```text
 http://localhost:5000
 ```
 
-### 3. Frontend Setup
+### Frontend Setup
 
 ```bash
 cd frontend
@@ -117,7 +115,7 @@ npm install
 npm run dev
 ```
 
-The frontend runs on:
+Frontend URL:
 
 ```text
 http://localhost:5173
@@ -125,7 +123,7 @@ http://localhost:5173
 
 ## Test Accounts
 
-The seed data includes development accounts for testing.
+The seed data includes local development accounts for testing.
 
 | Role | Email | Password |
 |---|---|---|
@@ -137,7 +135,7 @@ These are sample local development credentials, not production credentials.
 
 ## Screenshots
 
-Screenshots will be added after the interface is cleaned and tested.
+Screenshots will be added after the interface is reviewed and tested.
 
 | Screen | Status |
 |---|---|
@@ -152,9 +150,9 @@ Screenshots will be added after the interface is cleaned and tested.
 
 - How frontend, backend, and database layers work together in a full-stack system.
 - How role-based access changes application flow and dashboard behaviour.
-- How database design supports real workflows such as bookings, seats, schedules, and payments.
-- How important clear branch ownership and integration planning are in group projects.
-- How to document a project so that another person can understand and run it.
+- How database design supports booking, seat, schedule, and payment workflows.
+- How important communication, file ownership, and integration planning are in group projects.
+- How to document a group project clearly for future review.
 
 ## Challenges
 
@@ -162,12 +160,12 @@ Screenshots will be added after the interface is cleaned and tested.
 - Keeping database files aligned between Oracle academic submission files and MySQL web app files.
 - Managing authentication, roles, and protected routes.
 - Integrating booking, payment, and email confirmation logic.
-- Keeping the repository clean while different people worked on different sections.
+- Preserving team contributions while cleaning the repository for portfolio presentation.
 
 ## Future Improvements
 
 - Add screenshots and a short demo walkthrough.
-- Remove duplicate frontend files after approval.
+- Review duplicate frontend files before removing anything.
 - Clarify which database files are active and which are academic/reference files.
 - Add stronger validation and error handling.
 - Add automated tests for core API routes.
@@ -176,7 +174,7 @@ Screenshots will be added after the interface is cleaned and tested.
 
 ## Repository Cleanup Note
 
-This repository is currently being polished for portfolio presentation. Some duplicate frontend files and overlapping database scripts are being reviewed before removal to avoid deleting any team work that may still be referenced.
+This repository is currently being polished for portfolio presentation while preserving the original group-project work. Some duplicate frontend files and overlapping database scripts are being reviewed before removal to avoid deleting any team work that may still be referenced.
 
 ## Academic Note
 
