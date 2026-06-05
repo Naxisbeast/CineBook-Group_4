@@ -10,6 +10,14 @@ This was an academic group project completed for CMPG 311. The goal was to desig
 
 The system allows users to browse movies, view show schedules, select seats, make bookings, and complete a simulated payment flow. It also includes role-based dashboards for customers, cinema managers, and administrators.
 
+## Team Project Note
+
+CineBook was completed as a CMPG 311 group project at North-West University. This repository represents combined team work, with different members contributing to the database design, backend routes, frontend pages, UI components, authentication, booking flow, documentation, and integration.
+
+I include this project in my portfolio as evidence of collaborative software engineering experience, database-backed application development, and exposure to full-stack project integration.
+
+The `.github/CODEOWNERS` file was used as a project review and ownership guard during integration. It should not be read as individual authorship of the entire system.
+
 ## Features
 
 - Movie browsing and movie detail pages.
