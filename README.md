@@ -10,21 +10,6 @@ This was an academic group project completed for CMPG 311. The goal was to desig
 
 The system allows users to browse movies, view show schedules, select seats, make bookings, and complete a simulated payment flow. It also includes role-based dashboards for customers, cinema managers, and administrators.
 
-## My Role / Contribution
-
-My role focused mainly on project coordination, integration support, documentation support, and selected database/backend-related work.
-
-My contribution included:
-
-- Helping coordinate the project structure and integration planning.
-- Supporting database schema work and table constraints for the Oracle submission.
-- Supporting final integration between database, backend, frontend, and documentation files.
-- Improving README and setup documentation.
-- Supporting backend integration work around server setup, database connection configuration, role-based routing, environment configuration, and related documentation.
-- Helping keep team contributions organised through branch and file ownership planning.
-
-This was not an individual project. The repository contains work contributed by multiple team members.
-
 ## Features
 
 - Movie browsing and movie detail pages.
