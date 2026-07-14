@@ -128,16 +128,21 @@ These are sample local development credentials, not production credentials.
 
 ## Screenshots
 
-Screenshots will be added after the interface is reviewed and tested.
-
-| Screen | Status |
+| Screen | Preview |
 |---|---|
-| Home page | To be added |
-| Movie details | To be added |
-| Seat booking | To be added |
-| Customer profile | To be added |
-| Admin dashboard | To be added |
-| Manager dashboard | To be added |
+| Home page | ![Home page](screenshots/01_homepage.png) |
+| Now showing | ![Now showing](screenshots/02_now_showing.png) |
+| Coming soon | ![Coming soon](screenshots/03_coming_soon.png) |
+| Sign in | ![Sign in](screenshots/04_sign_in.png) |
+| Create account | ![Create account](screenshots/05_create_account.png) |
+| Admin operations dashboard | ![Admin dashboard](screenshots/06_admin_operations_dashboard.png) |
+| Movie details & booking | ![Movie details](screenshots/07_movie_details_booking.png) |
+| Seat selection & checkout | ![Seat selection](screenshots/08_seat_selection_checkout.png) |
+| Payment & confirm order | ![Payment](screenshots/09_payment_confirm_order.png) |
+| Ticket confirmation email | ![Email confirmation](screenshots/10_ticket_confirmation_email.png) |
+| Member profile & bookings | ![Member profile](screenshots/11_member_profile_bookings.png) |
+| Cinema manager dashboard | ![Manager dashboard](screenshots/12_cinema_manager_dashboard.png) |
+| Theatre bookings table | ![Theatre bookings](screenshots/13_theatre_bookings_table.png) |
 
 ## What I Learned
 
