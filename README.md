@@ -20,14 +20,23 @@ The `.github/CODEOWNERS` file was used as a project review and ownership guard d
 
 ## My Contribution
 
-Within the team project, my specific areas were:
+This was an 8-person team project. Within the team, my specific areas were:
 
 - **Database schema and analytical queries** — the Oracle `schema.sql` and `queries.sql` used for the academic database submission.
 - **Backend routes** — the payment and booking routes in `backend/routes/payments.js` and `backend/routes/bookings.js`.
 - **Frontend components** — `MovieHero.jsx` and the `AuthContext.jsx` authentication context.
 - **Project coordination and integration** — repository structure, branching strategy, pull request workflow, and integration support across the team.
 
-These are documented in the `.github/CODEOWNERS` ownership map, which assigned these files to me for review. The system as a whole was built collaboratively by all team members.
+The `.github/CODEOWNERS` ownership map assigned these files to me for review, and documented the broader division of work across the group:
+
+- **Thato** — Oracle indexes/views, movie/show/seat backend routes.
+- **Ncobile** — Oracle seed data and MySQL seed data.
+- **Dineo** — Home and movie pages, movie card component.
+- **Clifford** — Booking and payment pages, booking summary component.
+- **Banele** — Extra Oracle SQL, seat grid and confirmation components, navbar.
+- **Tshepo** — Auth routes, token verification middleware, login/register/profile pages.
+
+The system as a whole was built collaboratively by all team members; this section records the areas I personally worked on and credits my teammates for theirs.
 
 ## Features
 
