@@ -18,6 +18,17 @@ I include this project in my portfolio as evidence of collaborative software eng
 
 The `.github/CODEOWNERS` file was used as a project review and ownership guard during integration. It should not be read as individual authorship of the entire system.
 
+## My Contribution
+
+Within the team project, my specific areas were:
+
+- **Database schema and analytical queries** — the Oracle `schema.sql` and `queries.sql` used for the academic database submission.
+- **Backend routes** — the payment and booking routes in `backend/routes/payments.js` and `backend/routes/bookings.js`.
+- **Frontend components** — `MovieHero.jsx` and the `AuthContext.jsx` authentication context.
+- **Project coordination and integration** — repository structure, branching strategy, pull request workflow, and integration support across the team.
+
+These are documented in the `.github/CODEOWNERS` ownership map, which assigned these files to me for review. The system as a whole was built collaboratively by all team members.
+
 ## Features
 
 - Movie browsing and movie detail pages.
